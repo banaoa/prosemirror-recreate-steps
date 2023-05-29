@@ -5,3 +5,4 @@ demo/history/index-build.js
 dist/
 .nyc_output
 coverage
+.idea
