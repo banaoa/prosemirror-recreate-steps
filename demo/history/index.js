@@ -41,31 +41,35 @@ document.getElementById('make_diff').addEventListener('click', () => {
     // 一个 mapping 表示 0 个或者更多个 step maps 的管道。为了能够无损的处理通过一系列 step 而产生的位置 mapping，
     // 其中一些 steps 很有可能是之前 step 的反转版本（这可能出现在为了协同编辑或者历史管理而 ‘rebasing’ step 的时候）因此有一些特殊的规定需要遵守。
     // 一个 maps 了 transform 中的每一个 steps 的 mapping。
-    let changes = ChangeSet.create(state.doc).addSteps(tr.doc, tr.mapping.maps)
+    let changeSet = ChangeSet.create(state.doc).addSteps(tr.doc, tr.mapping.maps)
+    let {startDoc, changes, simplifyChanges} = changeSet;
 
-    // 添加的元素
-    changes.inserted.forEach(insertion => {
-        decos = decos.add(tr.doc, [
+    changes.forEach(ccc => {
+        // 添加的元素
+        ccc.inserted.forEach(insertion => {
+            decos = decos.add(tr.doc, [
+                // 添加行内元素span, 添加class
+                Decoration.inline(ccc.fromB, ccc.toB, {class: 'insertion'}, {})
+            ])
+        })
+
+        // 删除的元素
+        ccc.deleted.forEach(deletion => {
+            let dom = document.createElement('span')
             // 添加行内元素span, 添加class
-            Decoration.inline(insertion.from, insertion.to, {class: 'insertion'}, {})
-        ])
+            dom.setAttribute('class', 'deletion')
+
+            dom.appendChild(
+                DOMSerializer.fromSchema(mySchema).serializeFragment(startDoc.slice(ccc.fromA, ccc.toA).content)
+            )
+
+            decos = decos.add(tr.doc, [
+                // Decoration.widget({widget: dom, side: -1, marks: []}).range(deletion.from, deletion.to)
+                Decoration.widget(ccc.fromA, dom, {marks: []})
+            ])
+        })
     })
-
-    // 删除的元素
-    changes.deleted.forEach(deletion => {
-
-        let dom = document.createElement('span')
-        // 添加行内元素span, 添加class
-        dom.setAttribute('class', 'deletion')
-
-        dom.appendChild(
-            DOMSerializer.fromSchema(mySchema).serializeFragment(deletion.slice.content)
-        )
-
-        decos = decos.add(tr.doc, [
-            Decoration.widget(deletion.pos, dom, {marks: []})
-        ])
-    })
+    
 
     let historyState = EditorState.create({
         doc: tr.doc,
