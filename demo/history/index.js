@@ -34,7 +34,7 @@ window.historyViews = []
 // Show changes 按钮
 document.getElementById('make_diff').addEventListener('click', () => {
     // state.doc是初始文档, view.state.doc是现在的文档
-    let tr = recreateTransform(state.doc, view.state.doc)
+    let tr = recreateTransform(state.doc, view.state.doc, false,  true)
     // 一个展示在 view 上的 document decorations（文档装饰器） 集合。
     let decos = DecorationSet.empty // decorations 的空集合。
     // https://prosemirror.xheldon.com/docs/ref/#transform.Mapping
