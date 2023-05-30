@@ -1,5 +1,5 @@
 {
-    "name": "@manuscripts/prosemirror-recreate-steps",
+    "name": "@banaoa/prosemirror-recreate-steps",
     "version": "0.1.4",
     "description": "Find and merge changes between two prosemirror documents without access to the steps.",
     "main": "dist/index.js",
@@ -50,7 +50,6 @@
         "rfc6902": "^5.0.1"
     },
     "devDependencies": {
-        "@manuscripts/publish": "^0.2.2",
         "eslint": "^8.41.0",
         "eslint-config-standard": "^17.0.0",
         "eslint-plugin-import": "^2.27.5",
