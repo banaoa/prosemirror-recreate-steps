@@ -4,7 +4,7 @@ import { Schema, DOMParser, DOMSerializer } from "prosemirror-model"
 import { schema } from "prosemirror-schema-basic"
 import { addListNodes } from "prosemirror-schema-list"
 import { exampleSetup } from "prosemirror-example-setup"
-import { Decoration,  DecorationSet } from "prosemirror-view"
+import { Decoration, DecorationSet } from "prosemirror-view"
 import { ChangeSet } from "prosemirror-changeset"
 import { recreateTransform } from "../../src"
 
@@ -29,7 +29,7 @@ window.view = new EditorView(document.querySelector("#editor"), {
     state
 })
 
-window.historyViews = []
+// window.historyViews = []
 
 // Show changes 按钮
 document.getElementById('make_diff').addEventListener('click', () => {
@@ -65,11 +65,10 @@ document.getElementById('make_diff').addEventListener('click', () => {
 
             decos = decos.add(tr.doc, [
                 // Decoration.widget({widget: dom, side: -1, marks: []}).range(deletion.from, deletion.to)
-                Decoration.widget(ccc.toB, dom, {marks: []})
+                Decoration.widget(ccc.toB, dom, { marks: [] })
             ])
         })
     })
-    
 
     let historyState = EditorState.create({
         doc: tr.doc,
@@ -85,15 +84,20 @@ document.getElementById('make_diff').addEventListener('click', () => {
             })
         ]
     })
+    // 新建一个div,
     let historyViewDiv = document.createElement('div')
+    // 获取页面展示历史记录区域的id, 即#history
     let historyDiv = document.getElementById('history')
 
+    // 将刚才新建的div添加到#history中
     historyDiv.insertBefore(historyViewDiv, historyDiv.firstElementChild)
 
-    window.historyViews.push(new EditorView(historyViewDiv, {
+    // 创建新的editorView, 展示差异
+    new EditorView(historyViewDiv, {
         state: historyState
-    }))
+    })
+    // window.historyViews.push()
 
-    state = view.state
+    state = view.state;
 
 })

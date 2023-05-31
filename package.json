@@ -1,6 +1,6 @@
 {
-    "name": "@banaoa/prosemirror-recreate-steps",
-    "version": "0.1.4",
+    "name": "@z-editor/prosemirror-recreate-steps",
+    "version": "0.1.5",
     "description": "Find and merge changes between two prosemirror documents without access to the steps.",
     "main": "dist/index.js",
     "module": "src/index.js",
